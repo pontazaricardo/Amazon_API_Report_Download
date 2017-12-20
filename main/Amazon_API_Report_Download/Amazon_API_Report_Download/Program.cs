@@ -16,6 +16,12 @@ namespace Amazon_API_Report_Download
 
         }
 
+        /// <summary>
+        /// Gets the last 3 settlement reports from Amazon API
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         private List<Tuple<string,DateTime,DateTime>> getReportsIds(MarketplaceWebService.MarketplaceWebService service, GetReportListRequest request)
         {
             List<Tuple<string, DateTime, DateTime>> reports = new List<Tuple<string, DateTime, DateTime>>(); //Includes the reportId, dateFrom and dateTo for a settlement report.
@@ -43,6 +49,20 @@ namespace Amazon_API_Report_Download
                     }
                 }
 
+                if (availableDates.Count < 4)
+                {
+                    //We were not able to get the last 3 reports. We will try then to return the most recent one.
+                    string reportId = reportIds[0];
+                    DateTime dateFrom = availableDates[1].AddDays(-1); //Settlement reports are available only until the next day of their period.
+                    DateTime dateTo = availableDates[0].AddDays(-1);
+
+                    Tuple<string, DateTime, DateTime> reportInfo = Tuple.Create(reportId, dateFrom, dateTo);
+                    reports.Add(reportInfo);
+                }else
+                {
+                    //We have more than 3 reports.
+
+                }
             }
             catch(Exception e)
             {
