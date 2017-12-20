@@ -17,10 +17,28 @@ namespace Amazon_API_Report_Download
     {
         static void Main(string[] args)
         {
+            string accessKeyId = "<Your AWS Access Key>";
+            string secretAccessKey = "<Your AWS Secret Key>";
+            string applicationName = "<Your Application Name>";
+            string applicationVersion = "<Your Application Version>";
+            string merchantId = "<Your Merchant ID>";
+            string marketplaceId = "<Your Marketplace ID>";
+
+            MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
+            config.ServiceURL = "https://mws.amazonservices.com";
+
+            config.SetUserAgentHeader(
+                applicationName,
+                applicationVersion,
+                "C#",
+                "<Parameter 1>", "<Parameter 2>");
+            MarketplaceWebService.MarketplaceWebService service = new MarketplaceWebServiceClient(accessKeyId, secretAccessKey, config);
+
+            DownloadSettlementReport(service, merchantId);
 
         }
 
-        public static void DownloadSettlementReport(MarketplaceWebServiceClient service, string merchantId, bool getOnlyMostRecent = false)
+        public static void DownloadSettlementReport(MarketplaceWebService.MarketplaceWebService service, string merchantId, bool getOnlyMostRecent = false)
         {
             GetReportListRequest request = new GetReportListRequest();
             request.Merchant = merchantId;
