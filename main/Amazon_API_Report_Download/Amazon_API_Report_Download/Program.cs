@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using MarketplaceWebService;
 using MarketplaceWebService.Model;
 
+using System.Configuration;
+using System.IO;
+
+
 namespace Amazon_API_Report_Download
 {
     class Program
@@ -70,6 +74,24 @@ namespace Amazon_API_Report_Download
                 }
             }
 
+            string reportId = settlemementReportsInfo[selectedReport].Item1;
+
+            #region Downloading report
+
+            GetReportRequest requestReport = new GetReportRequest();
+            requestReport.Merchant = merchantId;
+            requestReport.ReportId = reportId;
+
+            string amzSettlementReportPath = ConfigurationManager.AppSettings["Amz.SettlementReport.DownloadPath"]; //File path directory. Example: "C:/"
+            string amzSettlementReportFile = amzSettlementReportPath + "amzSettlementReport-" + DateTime.Now.ToString("yyyyMMdd-HHmmss") + ".txt";  //NOTE: The invokeGetReport needs to get all the time a different file name to avoid having an MD5 error. (Problem found while developing. Solution found here: https://sellercentral.amazon.com/forums/thread.jspa?threadID=12563)
+
+            requestReport.Report = File.Open(amzSettlementReportFile, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+
+            invokeGetReport(service, requestReport); //Added timestamp to the report filename to avoid the MD5 problem from Amazon's side.
+
+            Console.WriteLine("File was downloaded to: " + amzSettlementReportFile);
+
+            #endregion
         }
 
 
