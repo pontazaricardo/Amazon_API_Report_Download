@@ -16,6 +16,12 @@ namespace Amazon_API_Report_Download
 
         }
 
+        public static void DownloadSettlementReport(string merchantId, bool getOnlyMostRecent = false)
+        {
+
+        }
+
+
         /// <summary>
         /// Gets the last 3 settlement reports from Amazon API
         /// </summary>
