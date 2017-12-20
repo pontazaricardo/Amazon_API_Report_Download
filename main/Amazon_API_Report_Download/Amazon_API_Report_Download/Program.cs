@@ -17,6 +17,8 @@ namespace Amazon_API_Report_Download
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Preparing application...");
+
             string accessKeyId = "<Your AWS Access Key>";
             string secretAccessKey = "<Your AWS Secret Key>";
             string applicationName = "<Your Application Name>";
@@ -27,6 +29,8 @@ namespace Amazon_API_Report_Download
             MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
             config.ServiceURL = "https://mws.amazonservices.com";
 
+            Console.WriteLine("Contacting Amazon web services...");
+
             config.SetUserAgentHeader(
                 applicationName,
                 applicationVersion,
@@ -34,8 +38,11 @@ namespace Amazon_API_Report_Download
                 "<Parameter 1>", "<Parameter 2>");
             MarketplaceWebService.MarketplaceWebService service = new MarketplaceWebServiceClient(accessKeyId, secretAccessKey, config);
 
+            Console.WriteLine("Service client created. Downloading settlement report...");
+
             DownloadSettlementReport(service, merchantId);
 
+            Console.Read();
         }
 
         public static void DownloadSettlementReport(MarketplaceWebService.MarketplaceWebService service, string merchantId, bool getOnlyMostRecent = false)
