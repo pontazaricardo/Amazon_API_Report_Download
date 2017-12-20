@@ -82,5 +82,23 @@ namespace Amazon_API_Report_Download
 
             return reports;
         }
+
+        private void invokeGetReport(MarketplaceWebService.MarketplaceWebService service, GetReportRequest request)
+        {
+            try
+            {
+                Console.WriteLine("Downloading report...");
+
+                GetReportResponse response = service.GetReport(request);
+
+                Console.WriteLine("Downloaded!");
+
+            }
+            catch (MarketplaceWebServiceException ex)
+            {
+                Console.WriteLine("Caught Exception: " + ex.Message);
+                Console.WriteLine("Please try again in a couple of minutes.");  //Exception might be because of Amazon's limit of downloading a report once a minute. Try in a couple of min.
+            }
+        }
     }
 }
