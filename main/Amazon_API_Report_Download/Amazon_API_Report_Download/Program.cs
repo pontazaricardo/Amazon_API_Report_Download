@@ -83,6 +83,14 @@ namespace Amazon_API_Report_Download
             return reports;
         }
 
+        /// <summary>
+        /// The GetReport operation returns the contents of a report. Reports can potentially be
+        /// very large (>100MB) which is why we only return one report at a time, and in a
+        /// streaming fashion.
+        /// 
+        /// </summary>
+        /// <param name="service">Instance of MarketplaceWebService service</param>
+        /// <param name="request">GetReportRequest request</param>
         private void invokeGetReport(MarketplaceWebService.MarketplaceWebService service, GetReportRequest request)
         {
             try
