@@ -33,6 +33,43 @@ namespace Amazon_API_Report_Download
                 Console.WriteLine("No reports downloaded. Exiting.");
                 return;
             }
+
+            int selectedReport = 0;
+
+            if (!getOnlyMostRecent)
+            {
+                Console.WriteLine("List of available reports:");
+                for (int i = 0; i < 3; i++)
+                {
+                    int index = i + 1;
+                    Console.WriteLine(index + ". " + settlemementReportsInfo[i].Item2.ToShortDateString() + " - " + settlemementReportsInfo[i].Item3.ToShortDateString());
+                }
+
+                Console.WriteLine("Select option:");
+                char userInput = (char)Console.Read();
+                Console.ReadLine();
+                if (userInput == '1' || userInput == '2' || userInput == '3')
+                {
+                    switch (userInput)
+                    {
+                        case '2':
+                            selectedReport = 1;
+                            break;
+                        case '3':
+                            selectedReport = 2;
+                            break;
+                        case '1':
+                        default:
+                            selectedReport = 0;
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option detected. Selecting most recent report as default."); //At this point selectedReport = 0;
+                }
+            }
+
         }
 
 
