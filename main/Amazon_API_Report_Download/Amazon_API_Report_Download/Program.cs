@@ -61,13 +61,26 @@ namespace Amazon_API_Report_Download
                 }else
                 {
                     //We have more than 3 reports.
+                    for(int i = 0; i < 4; i++)
+                    {
+                        if (DateTime.Now.Subtract(availableDates[i]).Days > 2)  //We exclude the last report if it is still open (open = haven't finished the actual period).
+                        {
+                            string reportId = reportIds[i];
+                            DateTime dateFrom = availableDates[i + 1].AddDays(-1); //Settlement reports are available only until the next day of their period.
+                            DateTime dateTo = availableDates[i].AddDays(-1);
 
+                            Tuple<string, DateTime, DateTime> reportInfo = Tuple.Create(reportId, dateFrom, dateTo);
+                            reports.Add(reportInfo);
+                        }
+                    }
                 }
             }
             catch(Exception e)
             {
-
+                Console.WriteLine("Cannot download the list of settlement reports. Exception: " + e.Message);
             }
+
+            return reports;
         }
     }
 }
