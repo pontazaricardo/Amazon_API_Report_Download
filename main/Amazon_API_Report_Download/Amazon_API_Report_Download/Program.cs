@@ -16,9 +16,23 @@ namespace Amazon_API_Report_Download
 
         }
 
-        public static void DownloadSettlementReport(string merchantId, bool getOnlyMostRecent = false)
+        public static void DownloadSettlementReport(MarketplaceWebServiceClient service, string merchantId, bool getOnlyMostRecent = false)
         {
+            GetReportListRequest request = new GetReportListRequest();
+            request.Merchant = merchantId;
 
+            TypeList reportTypes = new TypeList();
+            reportTypes.Type = new List<string>() { "_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_" };
+
+            request.ReportTypeList = reportTypes;
+
+            List<Tuple<string, DateTime, DateTime>> settlemementReportsInfo = getReportsIds(service, request);
+
+            if (settlemementReportsInfo.Count() == 0)
+            {
+                Console.WriteLine("No reports downloaded. Exiting.");
+                return;
+            }
         }
 
 
@@ -28,7 +42,7 @@ namespace Amazon_API_Report_Download
         /// <param name="service"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        private List<Tuple<string,DateTime,DateTime>> getReportsIds(MarketplaceWebService.MarketplaceWebService service, GetReportListRequest request)
+        private static List<Tuple<string,DateTime,DateTime>> getReportsIds(MarketplaceWebService.MarketplaceWebService service, GetReportListRequest request)
         {
             List<Tuple<string, DateTime, DateTime>> reports = new List<Tuple<string, DateTime, DateTime>>(); //Includes the reportId, dateFrom and dateTo for a settlement report.
 
@@ -97,7 +111,7 @@ namespace Amazon_API_Report_Download
         /// </summary>
         /// <param name="service">Instance of MarketplaceWebService service</param>
         /// <param name="request">GetReportRequest request</param>
-        private void invokeGetReport(MarketplaceWebService.MarketplaceWebService service, GetReportRequest request)
+        private static void invokeGetReport(MarketplaceWebService.MarketplaceWebService service, GetReportRequest request)
         {
             try
             {
