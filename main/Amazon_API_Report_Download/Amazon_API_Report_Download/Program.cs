@@ -15,8 +15,14 @@ namespace Amazon_API_Report_Download
 
         }
 
-        private List<Tuple<string,DateTime,DateTime>> getSettlementReportsIds(MarketplaceWebService.MarketplaceWebService service, MarketplaceWebService.Model.GetReportListRequest request)
+        private List<Tuple<string,DateTime,DateTime>> getReportsIds(MarketplaceWebService.MarketplaceWebService service, MarketplaceWebService.Model.GetReportListRequest request)
         {
+            List<Tuple<string, DateTime, DateTime>> reports = new List<Tuple<string, DateTime, DateTime>>(); //Includes the reportId, dateFrom and dateTo for a settlement report.
+
+            if ((service == null) || (request == null))
+            {
+                return reports;
+            }
 
         }
     }
